@@ -4,3 +4,5 @@ part of 'weather_cubit.dart';
 class WeatherState {}
 class WeatherInitial extends WeatherState {}
 class LoadWeatherState extends WeatherState{}
+class SuccessWeatherState extends WeatherState{}
+class ErrorWeatherState extends WeatherState{}

@@ -8,77 +8,22 @@ class HomeScreen extends StatefulWidget {
 }
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  void initState() {
-    super.initState();
-    BlocProvider.of<WeatherCubit>(context).getWeather(cityName: "Cairo");
-  }
-  @override
   Widget build(BuildContext context) {
-    WeatherCubit cubit = BlocProvider.of<WeatherCubit>(context);
-    return BlocBuilder<WeatherCubit, WeatherState>(builder: (context, state) {
-          return Scaffold(
-              body: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "${cubit.weatherModel.condition}",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32,
-                      ),
-                    ),
-                    const Text(
-                      'updated at 23:46',
-                      style: TextStyle(
-                        fontSize: 24,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          '17',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 32,
-                          ),
-                        ),
-                        const Column(
-                          children: [
-                            Text(
-                              'Maxtemp: 24',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                            Text(
-                              'Mintemp: 16',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    const Text(
-                      'Light Rain',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32,
-                      ),
-                    ),
-                  ],
-                ),
-              ));
+    double screenHeight=MediaQuery.of(context).size.height;
+    double screenWidth=MediaQuery.of(context).size.width;
+    var cubit= WeatherCubit.get(context);
+    return BlocConsumer<WeatherCubit,WeatherState>(listener: (context,state){},
+        builder: (context,state){
+      return cubit.weatherModel==null?
+      const Center(child: CircularProgressIndicator())
+          : Scaffold(
+          body: Stack(children: [
+            Container(height: screenHeight,width: screenWidth,
+                child:Image(image: NetworkImage(cubit.weatherModel!.image!),fit: BoxFit.cover,)
+            )
+          ],
+          ),
+      );
     });
   }
 }
