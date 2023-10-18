@@ -7,6 +7,7 @@ class WeatherModel {
   int? visibility;
   int? humidity;
   int? uvIndex;
+  String? uvScale;
 
   WeatherModel({this.cityName,
     this.date,
@@ -15,7 +16,8 @@ class WeatherModel {
     this.condition,
     this.visibility,
     this.humidity,
-    this.uvIndex});
+    this.uvIndex,
+    this.uvScale});
 
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
     String conditionText = json['current']['condition']['text'];
@@ -53,6 +55,19 @@ class WeatherModel {
     else {
       imageCondition= "https://i.pinimg.com/236x/4e/22/57/4e2257ce54d1359137c6f15b0d16b3ec.jpg";
     }
+    int uvNum=json['current']['uv'].toInt();
+    String uvCondition;
+    if (uvNum<=2){
+      uvCondition="Low";
+    }else if(uvNum<=5){
+      uvCondition="Moderate";
+    }else if(uvNum<=7){
+      uvCondition="High";
+    }else if(uvNum<=10){
+      uvCondition="V.High";
+    }else{
+      uvCondition="Extreme";
+    }
     return WeatherModel(
       cityName: json['location']['name'],
       date: json['current']['last_updated'],
@@ -61,7 +76,8 @@ class WeatherModel {
       image:imageCondition,
       visibility: json['current']['vis_km'].toInt(),
       humidity: json['current']['humidity'].toInt(),
-      uvIndex: json['current']['uv'].toInt(),
+      uvIndex: uvNum,
+      uvScale:uvCondition
     );
   }
 }
